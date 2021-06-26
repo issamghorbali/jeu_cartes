@@ -22,7 +22,7 @@ composer install
  http://localhost:8000/
  
  
- ![Screenshot](screenshot.jpg)
+ ![Screenshot](screenshot.JPG)
  
 
  
