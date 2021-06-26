@@ -1,0 +1,34 @@
+<div class="col-md-12 ">
+    <h2>Main Non Trié</h2>
+</div>
+
+<div class="col-md-12">
+    {% for item in main %}
+
+        <div class="carte" style="border: solid 2px {{ item.getCouleur().color }}; color:{{ item.getCouleur().color }} ">
+            {{ item.getCouleur().symbole }}
+            <br>
+            <strong>{{ item.getValeur().name }}</strong>
+            <br>
+            <span style="font-size: 12px"> force:  {{ item.getForce() }}</span>
+        </div>
+    {% endfor %}
+</div>
+
+<div style="float:left; width: 100%; margin: 20px;"></div>
+<div class="col-12 ">
+    <h2 style="float:left; width: 100%;">Main Trié</h2>
+</div>
+
+<div class="col-md-12">
+    {% for item in mainTri %}
+
+        <div class="carte" style="border: solid 2px {{ item.getCouleur().color }}; color:{{ item.getCouleur().color }} ">
+            {{ item.getCouleur().symbole }}
+            <br>
+           <strong> {{ item.getValeur().name }}</strong>
+            <br>
+           <span style="font-size: 12px"> force:  {{ item.getForce() }}</span>
+        </div>
+    {% endfor %}
+</div>

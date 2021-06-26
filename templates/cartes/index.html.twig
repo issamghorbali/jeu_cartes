@@ -1,0 +1,145 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CartesController!{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <h1 style="margin: 20px;">Jeux de 52 Cartes</h1>
+
+    <div class="col-md-12">
+        <span style="float: left; width: 100%;">Affichage aléatoire</span>
+    {% for carte in cartes %}
+
+<div class="carte" style="border: solid 2px {{ carte.getCouleur().color }}; color:{{ carte.getCouleur().color }} ">
+    {{ carte.getCouleur().symbole }}
+    <br>
+    <strong> {{ carte.getValeur().name }}</strong>
+</div>
+    {% endfor %}
+    </div>
+
+    <div class="col-md-12">
+        <h2> Couleurs</h2>
+        <span style="float: left; width: 100%;">Tri aléatoire</span>
+    </div>
+
+<div class="col-md-12 blocCouleurs">
+    {% for couleur in couleurs %}
+
+        <div class="carte" id="{{ couleur.id }}" style="border: solid 2px {{ couleur.color }}; color:{{ couleur.color }} ">
+            {{ couleur.symbole }}
+        </div>
+    {% endfor %}
+</div>
+
+    <div class="col-md-12 ">
+       <h2> Valeurs</h2>
+        <span style="float: left; width: 100%;">Tri aléatoire</span>
+    </div>
+
+    <div class="col-md-12 blocValeurs">
+    {% for valeur in valeurs %}
+
+        <div class="carte" id="{{ valeur.id }}">
+            {{ valeur.name }}
+        </div>
+    {% endfor %}
+    </div>
+
+
+        <form class="form-inline col-md-12"  style="margin: 25px">
+            <div class="form-group mb-2">
+                <label for="staticEmail2" class="sr-only">saisir le nombre (X) de cartes à piocher </label>
+                saisir le nombre (X) de cartes à piocher
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="input" class="sr-only">nombre (X) </label>
+                <input type="number" class="form-control" min="1" max="52" id="nb_piocher" placeholder="nombre (X) ">
+            </div>
+            <button type="button" class="btn btn-primary mb-2" onclick="piocher()">piocher</button>
+        </form>
+
+
+        <div id="main" class="col-md-12">
+
+
+        </div>
+</div>
+
+</div>
+
+    <script>
+        function piocher() {
+            n=$('#nb_piocher').val();
+
+            $.ajax({
+                url:"{{ path('piocher_cartes')}}",
+                method:"POST",
+                data:{ n:n},
+                success:function(data)
+                {
+                    if(data.error==1){
+                        alert('Merci de vérifier le valeur à piocher');
+                    } else
+                     $('#main').load('{{ path('main_picher') }}')
+                }
+            })
+
+        }
+    </script>
+
+    <script>
+        $('.blocCouleurs').sortable({
+            placeholder : "ui-state-highlight",
+            update : function(event, ui)
+            {
+
+                var groupe_id_array = new Array();
+                $('.blocCouleurs div').each(function(){
+                    groupe_id_array.push($(this).attr('id'));
+                    // alert($(this).attr('id'));
+                });
+
+                $.ajax({
+                    url:"{{ path('set_ordre_couleurs')}}",
+                    method:"POST",
+                    data:{page_id_array:groupe_id_array},
+                    success:function()
+                    {
+// refraicher la main selon les nouveaux forces
+                        $('#main').load('{{ path('main_picher') }}');
+                    }
+                })
+            }
+        });
+    </script>
+
+    <script>
+        $('.blocValeurs').sortable({
+            placeholder : "ui-state-highlight",
+            update : function(event, ui)
+            {
+
+                var page_id_array = new Array();
+                $('.blocValeurs div').each(function(){
+                    page_id_array.push($(this).attr('id'));
+                    // alert($(this).attr('id'));
+                });
+
+                $.ajax({
+                    url:"{{ path('set_ordre_valeurs')}}",
+                    method:"POST",
+                    data:{page_id_array:page_id_array},
+                    success:function()
+                    {
+                        // refraicher la main selon les nouveaux forces
+                        $('#main').load('{{ path('main_picher') }}');
+
+                    }
+                })
+            }
+        });
+
+    </script>
+{% endblock %}

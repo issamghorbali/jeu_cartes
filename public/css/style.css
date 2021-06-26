@@ -1,0 +1,22 @@
+.carte{
+    float: left;
+    padding-inline:.25rem;
+    padding-block:.25rem;
+    list-style:none;
+    background:linear-gradient(to bottom,#fff,#ddd);
+    border-radius:5px;
+    box-shadow:0 0 5px #555;
+    height:90px;
+    width:70px;
+    position:relative;
+    display:grid;
+    grid-template-columns: auto;
+    grid-template-rows: 15% 10% 50% 10% 15%;
+    margin: 2px;
+}
+.carte strong{
+    font-size:1rem;
+    margin-top: 50px;
+    place-self:center;
+
+}
